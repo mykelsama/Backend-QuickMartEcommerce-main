@@ -39,18 +39,23 @@ namespace Ecommerce.Controller.src.Controllers
         }
 
         [HttpGet("authenticate")]
-        public async Task<ActionResult<UserReadDto>> AuthenticateAsync([FromQuery] string token)
-        {
-            if (string.IsNullOrEmpty(token))
-            {
-                if (!Request.Headers.TryGetValue("Authorization", out var bearerToken))
-                {
-                    return Unauthorized("Missing Authorization Header");
-                }
-                token = bearerToken.ToString().Replace("Bearer ", "");
-            }
-            var user = await _authService.AuthenticateUserAsync(token);
-            return Ok(user);
-        }
+     public async Task<ActionResult<UserReadDto>> AuthenticateAsync(
+    [FromQuery] string token,
+    [FromHeader(Name = "Authorization")] string authorizationHeader)
+{
+    if (string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(authorizationHeader))
+    {
+        token = authorizationHeader.Replace("Bearer ", "");
+    }
+
+    if (string.IsNullOrEmpty(token))
+    {
+        return Unauthorized("Missing Authorization Token");
+    }
+
+    var user = await _authService.AuthenticateUserAsync(token);
+    return Ok(user);
+}
+
     }
 }
