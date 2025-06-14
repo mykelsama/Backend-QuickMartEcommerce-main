@@ -20,24 +20,23 @@ namespace Ecommerce.Controller.src.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> HandleStripeWebhook()
+        [HttpPost]
+public async Task<IActionResult> HandleStripeWebhook([FromHeader(Name = "Stripe-Signature")] string stripeSignature)
+{
+    var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+    var stripeEvent = EventUtility.ConstructEvent(json, stripeSignature, _config["Stripe:WhSecret"]);
+
+    if (stripeEvent.Type == Events.CheckoutSessionCompleted)
+    {
+        var session = stripeEvent.Data.Object as Session;
+        if (session != null)
         {
-            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
-            var stripeEvent = EventUtility.ConstructEvent(
-                json,
-                Request.Headers["Stripe-Signature"],
-                _config["Stripe:WhSecret"]
-            );
-
-            if (stripeEvent.Type == Events.CheckoutSessionCompleted)
-            {
-                if (stripeEvent.Data.Object is Session session)
-                {
-                    await _orderService.MarkOrderAsPaid(session.Id);
-                }
-            }
-
-            return Ok();
+            await _orderService.MarkOrderAsPaid(session.Id);
         }
+    }
+
+    return Ok();
+}
+
     }
 }
