@@ -71,7 +71,7 @@ namespace Ecommerce.WebAPI.src.ExternalService
             tokenHandler.ValidateToken(token, new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey!)),
+                IssuerSigningKey = ,
                 ValidateIssuer = true,
                 ValidIssuer = _configuration["Secrets:Issuer"],
                 ValidateAudience = false,

@@ -12,8 +12,8 @@ namespace Ecommerce.Core.src.Entities
         public Category(string name, string image)
         {
             Id = Guid.NewGuid();
-            Name = Guard.Against.NullOrWhiteSpace(name, nameof(name));
-            Image = Guard.Against.NullOrWhiteSpace(image, nameof(image));
+            Name = Guard.Against.NullOrWhiteSpace(name);
+            Image = Guard.Against.NullOrWhiteSpace(image);
         }
 
     }

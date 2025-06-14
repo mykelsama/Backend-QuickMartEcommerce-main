@@ -20,7 +20,7 @@ namespace Ecommerce.Core.src.Entities.OrderAggregate
         {
             Id = Guid.NewGuid();
             AddressLine = Guard.Against.NullOrWhiteSpace(addressLine, nameof(addressLine), "Address line is required.");
-            City = Guard.Against.NullOrWhiteSpace(city, nameof(city), "City is required.");
+            City = Guard.Against.NullOrWhiteSpace(city);
             PostalCode = Guard.Against.NullOrWhiteSpace(postalCode, nameof(postalCode), "Postal code is required");
             Country = Guard.Against.NullOrWhiteSpace(country, nameof(country), "Country is required.");
         }

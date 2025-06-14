@@ -13,3 +13,4 @@ psql -h localhost -U test_admin -tc "SELECT 1 FROM pg_database WHERE datname = '
 # Run your database migrations here
 echo "Running database migrations..."
 dotnet ef database update --no-build -s /publish/Ecommerce.WebAPI.dll
+  
